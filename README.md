@@ -1,6 +1,6 @@
 ## 🍴openmensa
 
-[![godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/kiliankoe/openmensa)
+[![godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/kiliankoe/openmensa) [![travis](https://img.shields.io/travis/kiliankoe/openmensa.svg?style=flat-square&maxAge=2592000)](https://travis-ci.org/kiliankoe/openmensa)
 
 This is a small golang wrapper for the [OpenMensa](https://openmensa.org) API. Very WIP.
 
