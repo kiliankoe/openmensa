@@ -14,8 +14,8 @@ import (
 )
 
 func main() {
-  canteens, _ := openmensa.GetCanteens(79) // Alte Mensa Dresden
-  meals, _ := canteen[0].TodaysMeals()
+  canteens, _ := openmensa.GetCanteens(79, 80)
+  meals, _ := canteens[0].TodaysMeals()
   for _, meal := range meals {
     fmt.Println(meal)
   }
