@@ -8,11 +8,11 @@ import (
 
 // A Canteen object
 type Canteen struct {
-	ID         int       `json:"id"`
-	Name       string    `json:"name"`
-	City       string    `json:"city"`
-	Address    string    `json:"address"`
-	Coordinate []float64 `json:"coordinates"`
+	ID         int         `json:"id"`
+	Name       string      `json:"name"`
+	City       string      `json:"city"`
+	Address    string      `json:"address"`
+	Coordinate *Coordinate `json:"coordinates"`
 }
 
 func (c Canteen) String() string {
