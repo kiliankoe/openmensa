@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"strconv"
+	"strings"
 )
 
 // A Canteen object
@@ -29,7 +31,7 @@ func GetAllCanteens() (canteens []*Canteen, err error) {
 
 	for {
 		params := url.Query()
-		params.Set("page", fmt.Sprintf("%d", page))
+		params.Set("page", strconv.Itoa(page))
 		url.RawQuery = params.Encode()
 
 		resp, err := get(url.String())
@@ -53,12 +55,22 @@ func GetAllCanteens() (canteens []*Canteen, err error) {
 	return
 }
 
-// GetCanteen returns a canteen object for the given id
-func GetCanteen(id int) (canteen *Canteen, err error) {
-	url := fmt.Sprintf("%s/canteens/%d", BaseURL, id)
-	resp, err := get(url)
+// GetCanteens returns a list of canteen objects for the given ids
+func GetCanteens(ids ...int) (canteens []*Canteen, err error) {
+	url, _ := url.Parse(fmt.Sprintf("%s/canteens", BaseURL))
 
-	err = json.Unmarshal(resp, &canteen)
+	stringIDs := []string{}
+	for _, id := range ids {
+		stringIDs = append(stringIDs, strconv.Itoa(id))
+	}
+
+	params := url.Query()
+	params.Set("ids", strings.Join(stringIDs, ","))
+	url.RawQuery = params.Encode()
+
+	resp, err := get(url.String())
+
+	err = json.Unmarshal(resp, &canteens)
 
 	return
 }
