@@ -3,8 +3,6 @@ package openmensa
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"time"
 )
 
@@ -40,17 +38,9 @@ func (c Canteen) TodaysMeals() (meals []*Meal, err error) {
 func (c Canteen) GetMeals(date time.Time) (meals []*Meal, err error) {
 	url := fmt.Sprintf("%s/canteens/%d/days/%s/meals", BaseURL, c.ID, date.Format("2006-01-02"))
 
-	resp, err := http.Get(url)
-	if err != nil {
-		return
-	}
+	resp, err := get(url)
 
-	respData, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(respData, &meals)
+	err = json.Unmarshal(resp, &meals)
 
 	return
 }

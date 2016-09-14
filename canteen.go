@@ -3,8 +3,7 @@ package openmensa
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
+	"net/url"
 )
 
 // A Canteen object
@@ -20,19 +19,46 @@ func (c Canteen) String() string {
 	return fmt.Sprintf("%s", c.Name)
 }
 
+// GetAllCanteens returns a list of all known canteens
+// Since all OpenMensa uses pagination for the results, this will send multiple requests.
+func GetAllCanteens() (canteens []*Canteen, err error) {
+	// FIXME: Concurrency anyone?
+
+	url, _ := url.Parse(BaseURL + "canteens")
+	page := 1
+
+	for {
+		params := url.Query()
+		params.Set("page", fmt.Sprintf("%d", page))
+		url.RawQuery = params.Encode()
+
+		resp, err := get(url.String())
+
+		var currentCanteens []*Canteen
+		err = json.Unmarshal(resp, &currentCanteens)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(currentCanteens) == 0 {
+			// Reached the last page
+			break
+		}
+
+		canteens = append(canteens, currentCanteens...)
+
+		page++
+	}
+
+	return
+}
+
 // GetCanteen returns a canteen object for the given id
 func GetCanteen(id int) (canteen *Canteen, err error) {
-	resp, err := http.Get(fmt.Sprintf("%s/canteens/%d", BaseURL, id))
-	if err != nil {
-		return
-	}
+	url := fmt.Sprintf("%s/canteens/%d", BaseURL, id)
+	resp, err := get(url)
 
-	respData, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(respData, &canteen)
+	err = json.Unmarshal(resp, &canteen)
 
 	return
 }
