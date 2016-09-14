@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 // A Canteen object
@@ -34,31 +33,6 @@ func GetCanteen(id int) (canteen *Canteen, err error) {
 	}
 
 	err = json.Unmarshal(respData, &canteen)
-
-	return
-}
-
-// TodaysMeals is a helper wrapper for Meals() for today's menu
-func (c Canteen) TodaysMeals() (meals []*Meal, err error) {
-	now := time.Now()
-	return c.GetMeals(now)
-}
-
-// GetMeals returns all meals for a given date
-func (c Canteen) GetMeals(date time.Time) (meals []*Meal, err error) {
-	url := fmt.Sprintf("%s/canteens/%d/days/%s/meals", BaseURL, c.ID, date.Format("2006-01-02"))
-
-	resp, err := http.Get(url)
-	if err != nil {
-		return
-	}
-
-	respData, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(respData, &meals)
 
 	return
 }
