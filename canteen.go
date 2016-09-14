@@ -20,7 +20,7 @@ func (c Canteen) String() string {
 }
 
 // GetAllCanteens returns a list of all known canteens
-// Since all OpenMensa uses pagination for the results, this will send multiple requests.
+// Since OpenMensa uses pagination for the results, this will result in multiple requests.
 func GetAllCanteens() (canteens []*Canteen, err error) {
 	// FIXME: Concurrency anyone?
 
