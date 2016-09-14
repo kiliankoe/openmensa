@@ -11,6 +11,7 @@ type Coordinate struct {
 	Longitude float64
 }
 
+// UnmarshalJSON override for Coordinates
 func (c *Coordinate) UnmarshalJSON(data []byte) error {
 	tmp := []interface{}{&c.Latitude, &c.Longitude}
 	if err := json.Unmarshal(data, &tmp); err != nil {
