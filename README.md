@@ -7,13 +7,13 @@ Use it something like this:
 ```go
 import (
 	"fmt"
-  
+
   	"github.com/kiliankoe/openmensa"
 )
 
 func main() {
   canteen, _ := openmensa.GetCanteen(79)
-  meals, _ := canteen.Today()
+  meals, _ := canteen.TodaysMeals()
   for _, meal := range meals {
     fmt.Println(meal)
   }

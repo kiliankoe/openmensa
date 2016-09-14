@@ -38,14 +38,14 @@ func GetCanteen(id int) (canteen *Canteen, err error) {
 	return
 }
 
-// Today is a helper wrapper for Meals() for today's menu
-func (c Canteen) Today() (meals []*Meal, err error) {
+// TodaysMeals is a helper wrapper for Meals() for today's menu
+func (c Canteen) TodaysMeals() (meals []*Meal, err error) {
 	now := time.Now()
-	return c.Meals(now)
+	return c.GetMeals(now)
 }
 
-// Meals returns all meals for a given date
-func (c Canteen) Meals(date time.Time) (meals []*Meal, err error) {
+// GetMeals returns all meals for a given date
+func (c Canteen) GetMeals(date time.Time) (meals []*Meal, err error) {
 	url := fmt.Sprintf("%s/canteens/%d/days/%s/meals", BaseURL, c.ID, date.Format("2006-01-02"))
 
 	resp, err := http.Get(url)
